@@ -1,0 +1,3 @@
+import { Badge } from "@/components/ui";
+
+export default function NotificationsPage() { return <div className="account-card"><h2>Thông báo</h2><p className="muted">Cập nhật mới nhất về đơn hàng và ưu đãi.</p>{["Đơn hàng EC-260918-001 đang trên đường giao đến bạn.", "Bạn có voucher FREESHIP30 mới.", "Shop NOVA TECH vừa trả lời tin nhắn của bạn."].map((text, index) => <div key={text} className="address-card"><div><h3>{text} {index === 0 && <Badge tone="accent">Mới</Badge>}</h3><p>{index === 0 ? "15 phút trước" : index === 1 ? "Hôm qua" : "2 ngày trước"}</p></div><span className="side-icon">→</span></div>)}</div>; }

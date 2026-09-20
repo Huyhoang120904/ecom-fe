@@ -1,0 +1,23 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { ProductImage, RatingStars, ButtonLink } from "@/components/ui";
+import { AddToCart } from "@/components/common/AddToCart";
+import { categories, products, reviews } from "@/lib/mock-data";
+import { formatCurrency } from "@/lib/format";
+
+export function generateStaticParams() { return products.map((product) => ({ slug: product.slug })); }
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const product = products.find((item) => item.slug === slug);
+  return { title: product?.name ?? "Sản phẩm" };
+}
+
+export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const product = products.find((item) => item.slug === slug);
+  if (!product) notFound();
+  const categorySlug = categories.find((category) => category.name === product.category)?.slug ?? "products";
+  return <div className="container detail-wrap"><div className="breadcrumbs"><Link href="/">Trang chủ</Link><span>›</span><Link href={`/category/${categorySlug}`}>{product.category}</Link><span>›</span><span>{product.name}</span></div><div className="detail-grid"><div><ProductImage src={product.gallery[0]} alt={product.name} className="gallery-main" /><div className="gallery-thumbs">{product.gallery.map((src) => <ProductImage key={src} src={src} alt={`${product.name} gallery`} />)}</div></div><div className="detail-info"><p className="eyebrow">{product.brand} · {product.shop.name}</p><h1>{product.name}</h1><p className="detail-subtitle">{product.shortDescription}</p><div className="detail-meta"><RatingStars rating={product.rating} count={product.reviewCount} /><span className="muted">Đã bán {product.soldCount > 999 ? `${(product.soldCount / 1000).toFixed(1)}k` : product.soldCount}</span><span className="muted">SKU: {product.sku}</span></div><div className="detail-price"><strong>{formatCurrency(product.price)}</strong><del>{formatCurrency(product.originalPrice)}</del><span className="badge badge-danger">-{product.discountPercentage}%</span></div><p className="muted">{product.description}</p><AddToCart product={product} /><div className="shipping-card"><div className="shipping-row"><span className="shipping-icon">⌁</span><div><strong>Miễn phí vận chuyển</strong><span>Cho đơn từ 299.000đ · Dự kiến nhận 22–24/09</span></div></div><div className="shipping-row"><span className="shipping-icon">↺</span><div><strong>Đổi trả dễ dàng</strong><span>Đổi trả miễn phí trong vòng 30 ngày</span></div></div><div className="shipping-row"><span className="shipping-icon">◈</span><div><strong>Được bảo vệ bởi ecome</strong><span>Hoàn tiền nếu sản phẩm không đúng mô tả</span></div></div></div></div></div><div className="shop-detail-card"><ProductImage src={product.shop.avatar} alt={product.shop.name} className="shop-avatar" /><div className="shop-detail-card-content"><h3>{product.shop.name} {product.shop.verified && <span className="verified">✓</span>}</h3><p><span className="stars">★ {product.shop.rating}</span> · {product.shop.followers} người theo dõi · {product.shop.productCount} sản phẩm</p></div><ButtonLink href={`/shop/${product.shop.slug}`} variant="outline" size="sm">Xem shop</ButtonLink></div><div className="detail-tabs"><button className="detail-tab active">Mô tả sản phẩm</button><button className="detail-tab">Thông số</button><button className="detail-tab">Đánh giá ({product.reviewCount})</button></div><div className="description-grid"><div><h3>Được tạo ra cho những ngày bận rộn</h3><p>{product.description} {product.shortDescription} Thiết kế được hoàn thiện với sự cân bằng giữa trải nghiệm sử dụng, độ bền và những chi tiết khiến bạn muốn dùng sản phẩm mỗi ngày.</p><p>Chúng tôi tin rằng những món đồ tốt không cần phải ồn ào. Chúng chỉ cần làm đúng điều mình hứa, thật lâu và thật đẹp.</p></div><table className="spec-table"><tbody><tr><td>Thương hiệu</td><td>{product.brand}</td></tr><tr><td>Danh mục</td><td>{product.category}</td></tr><tr><td>Tình trạng</td><td>Mới 100%</td></tr><tr><td>Bảo hành</td><td>12 tháng chính hãng</td></tr></tbody></table></div><div className="review-list">{reviews.map((review) => <div className="review-card" key={review.id}><div className="review-top"><span className="review-avatar">{review.avatar}</span><div><strong>{review.name}</strong><small>{review.date} · {review.variant}</small></div></div><RatingStars rating={review.rating} compact /><p>{review.content}</p></div>)}</div></div>;
+}

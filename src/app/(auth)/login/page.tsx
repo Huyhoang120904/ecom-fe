@@ -1,0 +1,6 @@
+"use client";
+
+import Link from "next/link";
+import { Button } from "@/components/ui";
+
+export default function LoginPage() { return <><Link href="/" className="brand" style={{ marginBottom: 35 }}><span className="brand-mark">e</span><span>ecome<span className="brand-dot">.</span></span></Link><p className="eyebrow">Chào mừng trở lại</p><h1>Đăng nhập</h1><p>Tiếp tục hành trình khám phá những điều tốt hơn.</p><form className="auth-form" onSubmit={(event) => event.preventDefault()}><div className="form-field"><label htmlFor="email">Email hoặc số điện thoại</label><input id="email" type="text" placeholder="you@email.com" required /></div><div className="form-field"><label htmlFor="password">Mật khẩu</label><input id="password" type="password" placeholder="••••••••" required /></div><div className="auth-links"><label><input type="checkbox" /> Ghi nhớ đăng nhập</label><Link href="/forgot-password">Quên mật khẩu?</Link></div><Button size="lg">Đăng nhập <span>→</span></Button></form><div className="auth-divider">hoặc tiếp tục với</div><div className="social-login"><button className="social-button">G Google</button><button className="social-button"> Apple</button></div><p className="auth-bottom">Chưa có tài khoản? <Link href="/register">Tạo tài khoản</Link></p></>; }

@@ -1,0 +1,3 @@
+import { Button } from "@/components/ui";
+
+export default function SecurityPage() { return <div className="account-card"><h2>Bảo mật tài khoản</h2><p className="muted">Giữ tài khoản của bạn an toàn hơn.</p><div className="address-card"><div><h3>Mật khẩu</h3><p>Cập nhật lần cuối 3 tháng trước</p></div><Button variant="outline" size="sm">Đổi mật khẩu</Button></div><div className="address-card"><div><h3>Xác thực hai bước</h3><p>Bảo vệ tài khoản bằng mã xác thực khi đăng nhập.</p></div><Button variant="outline" size="sm">Thiết lập</Button></div><div className="address-card"><div><h3>Thiết bị đăng nhập</h3><p>Chrome trên Windows · Đang hoạt động</p></div><Button variant="ghost" size="sm">Quản lý</Button></div></div>; }

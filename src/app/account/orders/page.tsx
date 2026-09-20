@@ -1,0 +1,8 @@
+import Link from "next/link";
+import { Button, StatusBadge, ProductImage } from "@/components/ui";
+import { orders } from "@/lib/mock-data";
+import { formatCurrency } from "@/lib/format";
+
+export default function OrdersPage() {
+  return <div className="account-card"><h2>Đơn mua</h2><p className="muted">Theo dõi và quản lý tất cả đơn hàng của bạn.</p><div className="detail-tabs" style={{ marginTop: 0, marginBottom: 20, gap: 17 }}><button className="detail-tab active">Tất cả</button><button className="detail-tab">Đang giao</button><button className="detail-tab">Hoàn thành</button><button className="detail-tab">Đã hủy</button></div>{orders.map((order) => <div className="order-card" key={order.id}><div className="order-head"><span className="order-shop"><span className="mini-avatar">{order.shop.name[0]}</span>{order.shop.name}</span><StatusBadge status={order.status} /></div>{order.items.map((item) => <div className="order-body" key={item.product.id}><ProductImage src={item.product.image} alt={item.product.name} className="order-product-img" /><div><Link href={`/product/${item.product.slug}`}><strong>{item.product.name}</strong></Link><p>Phân loại: {item.variation ?? "Mặc định"} · Số lượng: {item.quantity}</p></div><strong style={{ marginLeft: "auto", fontSize: 12 }}>{formatCurrency(item.product.price * item.quantity)}</strong></div>)}<div className="order-footer"><span>{order.id} · {order.createdAt}</span><div className="order-total"><span>Tổng cộng:</span><strong>{formatCurrency(order.total)}</strong><Link href={`/account/orders/${order.id}`}><Button variant="outline" size="sm">Chi tiết</Button></Link></div></div></div>)}</div>;
+}
